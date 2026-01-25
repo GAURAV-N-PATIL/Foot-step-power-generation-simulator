@@ -221,33 +221,6 @@ Response:
 - **Data visualization** in table format
 - **Error handling** with user-friendly messages
 
-## 📈 Example Scenarios
-
-### Scenario 1: Light Walking (30 min)
-```
-Mass: 60 kg
-Pace: 80 steps/min
-Energy generated: 26.3 Wh
-Charge time for smartphone: ~4 hours
-```
-
-### Scenario 2: Brisk Walking (1 hour)
-```
-Mass: 80 kg
-Pace: 120 steps/min
-Energy generated: 64.8 Wh
-Charge time for smartphone: ~1.5 hours
-```
-
-### Scenario 3: Running (20 min)
-```
-Mass: 75 kg
-Pace: 160 steps/min
-Impact factor: 1.5
-Energy generated: 36.2 Wh
-Can power LED lighting continuously
-```
-
 ## 🔮 Real-World Applications
 
 1. **Wearable Devices**: Charge smartwatches and fitness trackers
@@ -263,45 +236,12 @@ Can power LED lighting continuously
 - Human gait biomechanics: 0.3s contact time
 - Ground stiffness: 40,000-60,000 N/m
 
-## ⚙️ Customization
-
-### Modify Efficiency
-Edit `calculations.py`:
-```python
-self.PIEZO_EFFICIENCY = 0.6  # Change to your material's efficiency
-```
-
-### Add More Devices
-Edit `app.py` in `device_equivalents()`:
-```python
-devices = {
-    'New Device (5W)': {'power': 5, 'can_power': power_watts >= 5},
-    ...
-}
-```
-
-### Adjust Physics Parameters
-Edit `calculations.py`:
-```python
-self.GRAVITY = 9.81
-self.IMPACT_DAMPING = 0.8
-```
-
 ## 📝 Notes
 
 - All calculations use SI units (Newton, meters, joules, watts)
 - Impact factor varies with shoe type and surface material
 - Piezoelectric efficiency depends on material and design
 - Real-world power generation may vary by ±30%
-
-## 🤝 Contributing
-
-Feel free to extend this simulator with:
-- More device types
-- Advanced materials database
-- 3D gait visualization
-- Machine learning predictions
-- Real sensor data integration
 
 ## 📄 License
 
