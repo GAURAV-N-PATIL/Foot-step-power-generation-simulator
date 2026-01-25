@@ -254,3 +254,9 @@ Created as an educational physics simulation tool. by <b>Gaurav-Patil<b>
 ---
 
 **Enjoy exploring the potential of footstep energy harvesting! ⚡👟**
+**🚀 To Run**
+cd footstep-power-generator
+pip install -r requirements.txt
+python app.py
+# Open http://localhost:5000
+
