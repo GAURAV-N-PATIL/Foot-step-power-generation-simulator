@@ -1,3 +1,5 @@
+let baseEnergyJ = 0;
+let basePowerW = 0;
 const massInput = document.getElementById('mass');
 const footstepsInput = document.getElementById('footsteps');
 const impactInput = document.getElementById('impact');
@@ -139,10 +141,14 @@ generateBtn.addEventListener('click', async () => {
 });
 
 function displayInstantaneousResults(data) {
+
+    baseEnergyJ = data.energy_per_step_J;
+    basePowerW = data.power_mW / 1000;   // convert mW → W
+
     document.getElementById('resultForce').textContent = data.force_N + ' N';
     document.getElementById('resultDisplacement').textContent = data.displacement_mm + ' mm';
-    document.getElementById('resultEnergy').textContent = data.energy_per_step_J + ' J';
-    document.getElementById('resultPower').textContent = data.power_mW + ' mW';
+
+    updateDisplayedUnits();
 
     instantCard.style.display = 'block';
 }
@@ -332,3 +338,29 @@ function showError(message) {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Footstep Power Generator Simulator loaded');
 });
+const unitToggle = document.getElementById('unitToggle');
+
+if (unitToggle) {
+    unitToggle.addEventListener('change', updateDisplayedUnits);
+}
+
+function updateDisplayedUnits() {
+
+    const selectedUnit = document.getElementById('unitToggle').value;
+
+    const energyElement = document.getElementById('resultEnergy');
+    const powerElement = document.getElementById('resultPower');
+
+    if (selectedUnit === 'SI') {
+
+        energyElement.textContent = baseEnergyJ.toFixed(4) + ' J';
+        powerElement.textContent = (basePowerW * 1000).toFixed(4) + ' mW';
+
+    } else if (selectedUnit === 'eV') {
+
+        const energyEV = baseEnergyJ * 6.242e18;
+
+        energyElement.textContent = energyEV.toExponential(4) + ' eV';
+        powerElement.textContent = basePowerW.toFixed(4) + ' W';
+    }
+}
