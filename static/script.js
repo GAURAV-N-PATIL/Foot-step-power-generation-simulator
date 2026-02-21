@@ -1,5 +1,7 @@
 let baseEnergyJ = 0;
 let basePowerW = 0;
+let baseCumulativeEnergyJ = 0;
+let baseCumulativeEnergyWh = 0;
 const massInput = document.getElementById('mass');
 const footstepsInput = document.getElementById('footsteps');
 const impactInput = document.getElementById('impact');
@@ -154,10 +156,14 @@ function displayInstantaneousResults(data) {
 }
 
 function displayCumulativeResults(data) {
+
+    baseCumulativeEnergyJ = data.total_energy_J;
+    baseCumulativeEnergyWh = data.total_energy_Wh;
+
     document.getElementById('resultSteps').textContent = data.total_footsteps;
     document.getElementById('resultDuration').textContent = data.duration_minutes + ' min';
-    document.getElementById('resultEnergyJ').textContent = data.total_energy_J + ' J';
-    document.getElementById('resultEnergyWh').textContent = data.total_energy_Wh + ' Wh';
+
+    updateCumulativeUnits();
 
     cumulativeCard.style.display = 'block';
 }
@@ -362,5 +368,42 @@ function updateDisplayedUnits() {
 
         energyElement.textContent = energyEV.toExponential(4) + ' eV';
         powerElement.textContent = basePowerW.toFixed(4) + ' W';
+    }
+}
+const cumulativeUnitToggle = document.getElementById('cumulativeUnitToggle');
+
+if (cumulativeUnitToggle) {
+    cumulativeUnitToggle.addEventListener('change', updateCumulativeUnits);
+}
+
+function updateCumulativeUnits() {
+
+    const selectedUnit = document.getElementById('cumulativeUnitToggle').value;
+    const energyElement = document.getElementById('resultEnergyJ');
+    const energyWhElement = document.getElementById('resultEnergyWh');
+
+    if (selectedUnit === 'SI') {
+
+        energyElement.textContent = baseCumulativeEnergyJ.toFixed(4) + ' J';
+        energyWhElement.textContent = baseCumulativeEnergyWh.toFixed(4) + ' Wh';
+
+    }
+
+    else if (selectedUnit === 'eV') {
+
+        const energyEV = baseCumulativeEnergyJ * 6.242e18;
+
+        energyElement.textContent = energyEV.toExponential(4) + ' eV';
+        energyWhElement.textContent = baseCumulativeEnergyWh.toFixed(4) + ' Wh';
+
+    }
+
+    else if (selectedUnit === 'kWh') {
+
+        const energyKWh = baseCumulativeEnergyWh / 1000;
+
+        energyElement.textContent = energyKWh.toFixed(6) + ' kWh';
+        energyWhElement.textContent = baseCumulativeEnergyWh.toFixed(4) + ' Wh';
+
     }
 }
