@@ -567,3 +567,24 @@ footer {
     border-radius: 8px;
     margin-bottom: 15px;
 }
+.result-item select {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.result-item select:hover {
+    border-color: #4CAF50;
+}
+
+.result-item select:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
+}

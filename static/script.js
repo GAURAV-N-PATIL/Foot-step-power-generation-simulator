@@ -407,3 +407,28 @@ function updateCumulativeUnits() {
 
     }
 }
+// Instant toggle
+document.querySelectorAll('#instantToggle .toggle-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+
+        document.querySelectorAll('#instantToggle .toggle-btn')
+            .forEach(b => b.classList.remove('active'));
+
+        this.classList.add('active');
+
+        updateDisplayedUnits(this.dataset.unit);
+    });
+});
+
+// Cumulative toggle
+document.querySelectorAll('#cumulativeToggle .toggle-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+
+        document.querySelectorAll('#cumulativeToggle .toggle-btn')
+            .forEach(b => b.classList.remove('active'));
+
+        this.classList.add('active');
+
+        updateCumulativeUnits(this.dataset.unit);
+    });
+});

@@ -65,10 +65,12 @@
                         </div>
                         <div class="result-item">
                             <span class="label">Output Unit</span>
-                            <select id="unitToggle">
-                                <option value="SI">SI Units</option>
-                                <option value="eV">Electron Volt (eV)</option>
-                            </select>
+                        
+                            <div class="toggle-group" id="instantToggle">
+                                <button class="toggle-btn active" data-unit="SI">J</button>
+                                <button class="toggle-btn" data-unit="eV">eV</button>
+                            </div>
+                        
                         </div>
                     </div>
                 </div>
@@ -95,11 +97,11 @@
                         
                         <div class="result-item">
                             <span class="label">Cumulative Unit</span>
-                            <select id="cumulativeUnitToggle">
-                                <option value="SI">Joule (J)</option>
-                                <option value="eV">Electron Volt (eV)</option>
-                                <option value="kWh">Kilowatt-hour (kWh)</option>
-                            </select>
+                            <div class="toggle-group" id="cumulativeToggle">
+                                <button class="toggle-btn active" data-unit="SI">J</button>
+                                <button class="toggle-btn" data-unit="eV">eV</button>
+                                <button class="toggle-btn" data-unit="kWh">kWh</button>
+                            </div>
                         </div>
                     </div>
                 </div>
