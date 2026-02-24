@@ -1,8 +1,17 @@
 // Unit conversion factors
 const UNIT_CONVERSIONS = {
     kg_to_lbs: 2.20462,
-    lbs_to_kg: 1 / 2.20462
+    lbs_to_kg: 1 / 2.20462,
+    joules_to_eV: 6.242e18  // 1 Joule = 6.242 × 10^18 eV
 };
+
+// Store current display unit for energy values
+let instantEnergyUnit = 'J';
+let cumulativeEnergyUnit = 'J';
+
+// Store original values
+let instantEnergyOriginal = null;
+let cumulativeEnergyOriginal = null;
 
 // Tab switching
 document.querySelectorAll('.tab-button').forEach(button => {
@@ -40,6 +49,92 @@ function convertMass(value, fromUnit, toUnit) {
         return value * UNIT_CONVERSIONS.lbs_to_kg;
     }
     return value;
+}
+
+// Energy unit conversion function
+function convertEnergy(value, fromUnit, toUnit) {
+    if (fromUnit === toUnit) return value;
+    
+    // Convert to Joules first if necessary
+    let joules = value;
+    if (fromUnit === 'eV') {
+        joules = value / UNIT_CONVERSIONS.joules_to_eV;
+    }
+    
+    // Convert from Joules to target unit
+    if (toUnit === 'eV') {
+        return joules * UNIT_CONVERSIONS.joules_to_eV;
+    }
+    return joules;
+}
+
+// Format large numbers for eV display
+function formatEV(value) {
+    if (value >= 1e18) {
+        return (value / 1e18).toFixed(3) + ' × 10¹⁸';
+    } else if (value >= 1e15) {
+        return (value / 1e15).toFixed(3) + ' × 10¹⁵';
+    } else if (value >= 1e12) {
+        return (value / 1e12).toFixed(3) + ' × 10¹²';
+    } else if (value >= 1e9) {
+        return (value / 1e9).toFixed(3) + ' × 10⁹';
+    } else if (value >= 1e6) {
+        return (value / 1e6).toFixed(3) + ' × 10⁶';
+    }
+    return value.toFixed(3);
+}
+
+// Instant Power Energy Unit Conversion
+document.addEventListener('DOMContentLoaded', () => {
+    const instantConversionBtn = document.getElementById('instant-energy-conversion-btn');
+    if (instantConversionBtn) {
+        instantConversionBtn.addEventListener('click', toggleInstantEnergyUnit);
+    }
+
+    const cumulativeConversionBtn = document.getElementById('cumulative-energy-conversion-btn');
+    if (cumulativeConversionBtn) {
+        cumulativeConversionBtn.addEventListener('click', toggleCumulativeEnergyUnit);
+    }
+});
+
+function toggleInstantEnergyUnit() {
+    if (!instantEnergyOriginal) return;
+
+    const energyValueElement = document.querySelector('#instant-results .result-value[data-key="energy_per_step_J"]');
+    const unitElement = document.getElementById('instant-energy-unit');
+
+    if (instantEnergyUnit === 'J') {
+        // Convert to eV
+        const eVValue = convertEnergy(instantEnergyOriginal, 'J', 'eV');
+        energyValueElement.textContent = formatEV(eVValue);
+        unitElement.textContent = 'eV';
+        instantEnergyUnit = 'eV';
+    } else {
+        // Convert back to J
+        energyValueElement.textContent = instantEnergyOriginal.toFixed(3);
+        unitElement.textContent = 'J';
+        instantEnergyUnit = 'J';
+    }
+}
+
+function toggleCumulativeEnergyUnit() {
+    if (!cumulativeEnergyOriginal) return;
+
+    const energyValueElement = document.querySelector('#cumulative-results .result-value[data-key="total_energy_J"]');
+    const unitElement = document.getElementById('cumulative-energy-unit');
+
+    if (cumulativeEnergyUnit === 'J') {
+        // Convert to eV
+        const eVValue = convertEnergy(cumulativeEnergyOriginal, 'J', 'eV');
+        energyValueElement.textContent = formatEV(eVValue);
+        unitElement.textContent = 'eV';
+        cumulativeEnergyUnit = 'eV';
+    } else {
+        // Convert back to J
+        energyValueElement.textContent = cumulativeEnergyOriginal.toFixed(2);
+        unitElement.textContent = 'J';
+        cumulativeEnergyUnit = 'J';
+    }
 }
 
 // Instant Power Calculation
@@ -122,6 +217,9 @@ async function calculateInstantPower() {
         const data = await response.json();
 
         if (response.ok) {
+            // Store original energy value for conversion
+            instantEnergyOriginal = data.data.energy_per_step_J;
+            instantEnergyUnit = 'J';
             displayResults(data.data, 'instant-results');
         } else {
             showError(data.error);
@@ -224,6 +322,9 @@ async function calculateCumulativeEnergy() {
         const data = await response.json();
 
         if (response.ok) {
+            // Store original energy value for conversion
+            cumulativeEnergyOriginal = data.data.total_energy_J;
+            cumulativeEnergyUnit = 'J';
             displayResults(data.data, 'cumulative-results');
         } else {
             showError(data.error);
