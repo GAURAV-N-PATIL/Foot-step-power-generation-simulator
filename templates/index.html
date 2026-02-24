@@ -113,8 +113,9 @@
                         </div>
                         <div class="result-item">
                             <div class="result-label">Energy/Step</div>
-                            <div class="result-value" data-key="energy_per_step_J">--</div>
-                            <div class="result-unit">J</div>
+                            <div class="result-value" data-key="energy_per_step_J" data-original-unit="J">--</div>
+                            <div class="result-unit" id="instant-energy-unit">J</div>
+                            <button class="unit-conversion-btn" id="instant-energy-conversion-btn" title="Convert Energy Units">🔄</button>
                         </div>
                         <div class="result-item highlight">
                             <div class="result-label">Power Output</div>
@@ -215,8 +216,9 @@
                         </div>
                         <div class="result-item highlight">
                             <div class="result-label">Energy (Joules)</div>
-                            <div class="result-value" data-key="total_energy_J">--</div>
-                            <div class="result-unit">J</div>
+                            <div class="result-value" data-key="total_energy_J" data-original-unit="J">--</div>
+                            <div class="result-unit" id="cumulative-energy-unit">J</div>
+                            <button class="unit-conversion-btn" id="cumulative-energy-conversion-btn" title="Convert Energy Units">🔄</button>
                         </div>
                         <div class="result-item highlight">
                             <div class="result-label">Energy (Watt-hours)</div>
