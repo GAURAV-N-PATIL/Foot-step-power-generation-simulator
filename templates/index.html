@@ -3,145 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Footstep Power Generator Simulator</title>
+    <title>⚡ Footstep Power Generator - Energy Harvesting Simulator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>⚡ Footstep Power Generator Simulator</h1>
-            <p>Calculate energy generated from your footsteps</p>
-        </header>
-        <main>
-            <section class="input-section">
-                <h2>Input Parameters</h2>
-                
-                <div class="input-group">
-                    <label for="mass">Body Mass (kg)</label>
-                    <input type="number" id="mass" min="30" max="300" value="70" step="1">
-                    <span class="range-display" id="massDisplay">70 kg</span>
-                </div>
-                <div class="input-group">
-                    <label for="footsteps">Walking Pace (steps/min)</label>
-                    <input type="number" id="footsteps" min="30" max="200" value="80" step="5">
-                    <span class="range-display" id="footstepsDisplay">80 steps/min</span>
-                </div>
-                <div class="input-group">
-                    <label for="impact">Impact Factor</label>
-                    <input type="range" id="impact" min="1.0" max="2.0" value="1.2" step="0.1">
-                    <span class="range-display" id="impactDisplay">1.2</span>
-                </div>
-                <div class="input-group">
-                    <label for="duration">Duration (minutes)</label>
-                    <input type="number" id="duration" min="1" max="1440" value="30" step="5">
-                    <span class="range-display" id="durationDisplay">30 min</span>
-                </div>
-                <div class="button-group">
-                    <button id="calculateBtn" class="btn btn-primary">Calculate Power</button>
-                    <button id="cumulativeBtn" class="btn btn-secondary">Calculate Cumulative Energy</button>
-                    <button id="generateBtn" class="btn btn-tertiary">Generate Data</button>
-                </div>
-            </section>
-            <section class="results-section">
-                <h2>Results</h2>
-                <div class="result-card" id="instantCard" style="display: none;">
-                    <h3>Instantaneous Power Output</h3>
-                    <div class="result-grid">
-                        <div class="result-item">
-                            <span class="label">Force</span>
-                            <span class="value" id="resultForce">-</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="label">Displacement</span>
-                            <span class="value" id="resultDisplacement">-</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="label">Energy/Step</span>
-                            <span class="value" id="resultEnergy">-</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="label">Power Output</span>
-                            <span class="value power-highlight" id="resultPower">-</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="label">Output Unit</span>
-                        
-                            <div class="toggle-group" id="instantToggle">
-                                <button class="toggle-btn active" data-unit="SI">J</button>
-                                <button class="toggle-btn" data-unit="eV">eV</button>
-                            </div>
-                        
-                        </div>
-                    </div>
-                </div>
-                <div class="result-card" id="cumulativeCard" style="display: none;">
-                    <h3>Cumulative Energy</h3>
-                    <div class="result-grid">
-                        <div class="result-item">
-                            <span class="label">Total Footsteps</span>
-                            <span class="value" id="resultSteps">-</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="label">Duration</span>
-                            <span class="value" id="resultDuration">-</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="label">Total Energy</span>
-                            <span class="value" id="resultEnergyJ">-</span>
-                        </div>
-                        
-                        <div class="result-item">
-                            <span class="label">Energy (Wh)</span>
-                            <span class="value" id="resultEnergyWh">-</span>
-                        </div>
-                        
-                        <div class="result-item">
-                            <span class="label">Cumulative Unit</span>
-                            <div class="toggle-group" id="cumulativeToggle">
-                                <button class="toggle-btn active" data-unit="SI">J</button>
-                                <button class="toggle-btn" data-unit="eV">eV</button>
-                                <button class="toggle-btn" data-unit="kWh">kWh</button>
+    <div class="background-animation"></div>
+    
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Footstep Power</span>
+            </div>
+            <p class="tagline">Harvest Energy from Every Step</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Footstep Energy Harvesting Simulator</h1>
+            <p>Discover how much power you can generate with every step using piezoelectric technology</p>
+        </section>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs-container">
+            <button class="tab-button active" data-tab="instant">
+                <span class="tab-icon">⚡</span>
+                Instant Power
+            </button>
+            <button class="tab-button" data-tab="cumulative">
+                <span class="tab-icon">📊</span>
+                Cumulative Energy
+            </button>
+            <button class="tab-button" data-tab="generator">
+                <span class="tab-icon">🎲</span>
+                Data Generator
+            </button>
+            <button class="tab-button" data-tab="devices">
+                <span class="tab-icon">📱</span>
+                Device Power
+            </button>
+        </div>
+
+        <!-- Tab 1: Instant Power Calculation -->
+        <section class="tab-content active" id="instant-tab">
+            <div class="card-grid">
+                <div class="input-card">
+                    <h2>Calculate Instantaneous Power</h2>
+                    <p class="card-subtitle">Enter your details to calculate power from a single step</p>
+                    
+                    <div class="form-group">
+                        <label for="mass-instant">Body Mass</label>
+                        <div class="input-wrapper">
+                            <input type="range" id="mass-instant" min="30" max="300" value="70" class="slider">
+                            <div class="input-display">
+                                <input type="number" id="mass-instant-input" value="70" min="30" max="300" class="number-input">
+                                <select id="mass-instant-unit" class="unit-select">
+                                    <option value="kg">kg</option>
+                                    <option value="lbs">lbs</option>
+                                </select>
                             </div>
                         </div>
+                        <span class="slider-info">30 kg - 300 kg</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="footsteps-instant">Walking Pace</label>
+                        <div class="input-wrapper">
+                            <input type="range" id="footsteps-instant" min="60" max="200" value="80" class="slider">
+                            <div class="input-display">
+                                <input type="number" id="footsteps-instant-input" value="80" min="60" max="200" class="number-input">
+                                <span class="unit-label">steps/min</span>
+                            </div>
+                        </div>
+                        <span class="slider-info">60 steps/min - 200 steps/min</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="impact-instant">Impact Factor</label>
+                        <div class="input-wrapper">
+                            <input type="range" id="impact-instant" min="1" max="2" step="0.1" value="1.2" class="slider">
+                            <div class="input-display">
+                                <input type="number" id="impact-instant-input" value="1.2" min="1" max="2" step="0.1" class="number-input">
+                                <span class="unit-label">multiplier</span>
+                            </div>
+                        </div>
+                        <span class="slider-info">1.0 - 2.0</span>
+                    </div>
+
+                    <button class="btn btn-primary" id="calculate-instant-btn">
+                        <span class="btn-icon">⚡</span>
+                        Calculate Power
+                    </button>
+                </div>
+
+                <div class="results-card">
+                    <h3>Results</h3>
+                    <div class="results-grid" id="instant-results">
+                        <div class="result-item">
+                            <div class="result-label">Impact Force</div>
+                            <div class="result-value" data-key="force_N">--</div>
+                            <div class="result-unit">N</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Displacement</div>
+                            <div class="result-value" data-key="displacement_mm">--</div>
+                            <div class="result-unit">mm</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Energy/Step</div>
+                            <div class="result-value" data-key="energy_per_step_J">--</div>
+                            <div class="result-unit">J</div>
+                        </div>
+                        <div class="result-item highlight">
+                            <div class="result-label">Power Output</div>
+                            <div class="result-value" data-key="power_W">--</div>
+                            <div class="result-unit">W</div>
+                        </div>
+                        <div class="result-item highlight">
+                            <div class="result-label">Power Output</div>
+                            <div class="result-value" data-key="power_mW">--</div>
+                            <div class="result-unit">mW</div>
+                        </div>
                     </div>
                 </div>
-                <div class="result-card" id="devicesCard" style="display: none;">
-                    <h3>What Can You Power?</h3>
-                    <div id="devicesList" class="devices-list"></div>
-                    <div id="chargingTimes" class="charging-times"></div>
-                </div>
-                <div class="result-card" id="dataCard" style="display: none;">
-                    <h3>Generated Footstep Data</h3>
-                    <div id="statistics" class="statistics"></div>
-                    <div id="dataTable" class="data-table-container"></div>
-                </div>
-            </section>
-            <section class="info-section">
-                <h2>How It Works</h2>
-                <div class="info-grid">
-                    <div class="info-card">
-                        <h4>Physics</h4>
-                        <p>Energy is calculated from footstep force, displacement, and piezoelectric efficiency (60%).</p>
+            </div>
+        </section>
+
+        <!-- Tab 2: Cumulative Energy -->
+        <section class="tab-content" id="cumulative-tab">
+            <div class="card-grid">
+                <div class="input-card">
+                    <h2>Calculate Cumulative Energy</h2>
+                    <p class="card-subtitle">Calculate total energy generated over time</p>
+                    
+                    <div class="form-group">
+                        <label for="mass-cumulative">Body Mass</label>
+                        <div class="input-wrapper">
+                            <input type="range" id="mass-cumulative" min="30" max="300" value="70" class="slider">
+                            <div class="input-display">
+                                <input type="number" id="mass-cumulative-input" value="70" min="30" max="300" class="number-input">
+                                <select id="mass-cumulative-unit" class="unit-select">
+                                    <option value="kg">kg</option>
+                                    <option value="lbs">lbs</option>
+                                </select>
+                            </div>
+                        </div>
+                        <span class="slider-info">30 kg - 300 kg</span>
                     </div>
-                    <div class="info-card">
-                        <h4>Typical Values</h4>
-                        <p>
-                            • Average footstep force: 700-1000N<br>
-                            • Normal walking pace: 80-100 steps/min<br>
-                            • Power per step: 5-10W<br>
-                        </p>
+
+                    <div class="form-group">
+                        <label for="footsteps-cumulative">Walking Pace</label>
+                        <div class="input-wrapper">
+                            <input type="range" id="footsteps-cumulative" min="60" max="200" value="80" class="slider">
+                            <div class="input-display">
+                                <input type="number" id="footsteps-cumulative-input" value="80" min="60" max="200" class="number-input">
+                                <span class="unit-label">steps/min</span>
+                            </div>
+                        </div>
+                        <span class="slider-info">60 - 200 steps/min</span>
                     </div>
-                    <div class="info-card">
-                        <h4>Applications</h4>
-                        <p>Charging wearables, powering sensors, emergency lighting, and IoT devices in remote areas.</p>
+
+                    <div class="form-group">
+                        <label for="duration-cumulative">Duration</label>
+                        <div class="input-wrapper">
+                            <input type="range" id="duration-cumulative" min="1" max="1440" value="30" class="slider">
+                            <div class="input-display">
+                                <input type="number" id="duration-cumulative-input" value="30" min="1" max="1440" class="number-input">
+                                <span class="unit-label">minutes</span>
+                            </div>
+                        </div>
+                        <span class="slider-info">1 - 1440 minutes</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="impact-cumulative">Impact Factor</label>
+                        <div class="input-wrapper">
+                            <input type="range" id="impact-cumulative" min="1" max="2" step="0.1" value="1.2" class="slider">
+                            <div class="input-display">
+                                <input type="number" id="impact-cumulative-input" value="1.2" min="1" max="2" step="0.1" class="number-input">
+                                <span class="unit-label">multiplier</span>
+                            </div>
+                        </div>
+                        <span class="slider-info">1.0 - 2.0</span>
+                    </div>
+
+                    <button class="btn btn-primary" id="calculate-cumulative-btn">
+                        <span class="btn-icon">📊</span>
+                        Calculate Energy
+                    </button>
+                </div>
+
+                <div class="results-card">
+                    <h3>Results</h3>
+                    <div class="results-grid" id="cumulative-results">
+                        <div class="result-item">
+                            <div class="result-label">Average Power</div>
+                            <div class="result-value" data-key="power_W">--</div>
+                            <div class="result-unit">W</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Duration</div>
+                            <div class="result-value" data-key="duration_minutes">--</div>
+                            <div class="result-unit">minutes</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Total Footsteps</div>
+                            <div class="result-value" data-key="total_footsteps">--</div>
+                            <div class="result-unit">steps</div>
+                        </div>
+                        <div class="result-item highlight">
+                            <div class="result-label">Energy (Joules)</div>
+                            <div class="result-value" data-key="total_energy_J">--</div>
+                            <div class="result-unit">J</div>
+                        </div>
+                        <div class="result-item highlight">
+                            <div class="result-label">Energy (Watt-hours)</div>
+                            <div class="result-value" data-key="total_energy_Wh">--</div>
+                            <div class="result-unit">Wh</div>
+                        </div>
                     </div>
                 </div>
-            </section>
-        </main>
-        <footer>
-            <p>Footstep Power Generator Simulator | Physics-based calculations</p>
-        </footer>
-    </div>
+            </div>
+        </section>
+
+        <!-- Tab 3: Data Generator -->
+        <section class="tab-content" id="generator-tab">
+            <div class="card-grid single-card">
+                <div class="input-card">
+                    <h2>Generate Footstep Data</h2>
+                    <p class="card-subtitle">Simulate realistic footstep patterns</p>
+                    
+                    <div class="form-group">
+                        <label for="mass-generator">Body Mass</label>
+                        <div class="input-wrapper">
+                            <input type="range" id="mass-generator" min="30" max="300" value="70" class="slider">
+                            <div class="input-display">
+                                <input type="number" id="mass-generator-input" value="70" min="30" max="300" class="number-input">
+                                <select id="mass-generator-unit" class="unit-select">
+                                    <option value="kg">kg</option>
+                                    <option value="lbs">lbs</option>
+                                </select>
+                            </div>
+                        </div>
+                        <span class="slider-info">30 kg - 300 kg</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="count-generator">Number of Footsteps</label>
+                        <div class="input-wrapper">
+                            <input type="range" id="count-generator" min="10" max="500" value="30" class="slider">
+                            <div class="input-display">
+                                <input type="number" id="count-generator-input" value="30" min="10" max="500" class="number-input">
+                                <span class="unit-label">steps</span>
+                            </div>
+                        </div>
+                        <span class="slider-info">10 - 500 steps</span>
+                    </div>
+
+                    <button class="btn btn-primary" id="generate-data-btn">
+                        <span class="btn-icon">🎲</span>
+                        Generate Data
+                    </button>
+                </div>
+
+                <div class="results-card full-width">
+                    <h3>Generated Data Statistics</h3>
+                    <div class="stats-grid" id="generator-stats">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                    <div class="data-table-container" id="data-table-container" style="display: none;">
+                        <table class="data-table" id="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Step #</th>
+                                    <th>Force (N)</th>
+                                    <th>Displacement (mm)</th>
+                                    <th>Energy (J)</th>
+                                    <th>Power (W)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="data-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 4: Device Equivalents -->
+        <section class="tab-content" id="devices-tab">
+            <div class="card-grid single-card">
+                <div class="input-card">
+                    <h2>What Can You Power?</h2>
+                    <p class="card-subtitle">Enter power generated to see compatible devices</p>
+                    
+                    <div class="form-group">
+                        <label for="power-devices">Power Output</label>
+                        <div class="input-wrapper">
+                            <input type="range" id="power-devices" min="0.5" max="50" step="0.5" value="5" class="slider">
+                            <div class="input-display">
+                                <input type="number" id="power-devices-input" value="5" min="0.5" max="50" step="0.5" class="number-input">
+                                <span class="unit-label">Watts</span>
+                            </div>
+                        </div>
+                        <span class="slider-info">0.5 W - 50 W</span>
+                    </div>
+
+                    <button class="btn btn-primary" id="calculate-devices-btn">
+                        <span class="btn-icon">📱</span>
+                        Check Compatibility
+                    </button>
+                </div>
+
+                <div class="results-card full-width">
+                    <h3>Compatible Devices</h3>
+                    <div class="devices-grid" id="devices-grid">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+
+                    <h3 style="margin-top: 2rem;">Charging Times</h3>
+                    <div class="charging-times" id="charging-times">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Info Section -->
+        <section class="info-section">
+            <h2>How It Works</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">📐</div>
+                    <h3>Physics Model</h3>
+                    <p>Our calculator uses real biomechanical equations including impact force, ground displacement, and piezoelectric efficiency.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">⚙️</div>
+                    <h3>Piezoelectric Tech</h3>
+                    <p>Piezoelectric materials convert mechanical pressure from footsteps into electrical energy with 60% efficiency.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🎯</div>
+                    <h3>Real-World Applications</h3>
+                    <p>From powering wearables to charging emergency devices, footstep energy is a sustainable power source.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>⚡ Footstep Power Generator - Harvest Energy from Every Step</p>
+        <p class="footer-subtitle">Created for educational purposes | Physics-based simulation</p>
+    </footer>
+
+    <div class="loading-spinner" id="loading-spinner"></div>
+    <div class="error-message" id="error-message"></div>
+
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
