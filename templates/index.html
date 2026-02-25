@@ -111,11 +111,13 @@
                             <div class="result-value" data-key="displacement_mm">--</div>
                             <div class="result-unit">mm</div>
                         </div>
-                        <div class="result-item">
+                        <div class="result-item energy-conversion-item">
                             <div class="result-label">Energy/Step</div>
-                            <div class="result-value" data-key="energy_per_step_J" data-original-unit="J">--</div>
-                            <div class="result-unit" id="instant-energy-unit">J</div>
-                            <button class="unit-conversion-btn" id="instant-energy-conversion-btn" title="Convert Energy Units">🔄</button>
+                            <div class="energy-value-container">
+                                <div class="result-value" data-key="energy_per_step_J" data-original-unit="J">--</div>
+                                <span class="result-unit" id="instant-energy-unit">J</span>
+                                <button class="unit-conversion-btn" id="instant-energy-conversion-btn" type="button" title="Convert to eV">🔄</button>
+                            </div>
                         </div>
                         <div class="result-item highlight">
                             <div class="result-label">Power Output</div>
@@ -214,11 +216,13 @@
                             <div class="result-value" data-key="total_footsteps">--</div>
                             <div class="result-unit">steps</div>
                         </div>
-                        <div class="result-item highlight">
+                        <div class="result-item highlight energy-conversion-item">
                             <div class="result-label">Energy (Joules)</div>
-                            <div class="result-value" data-key="total_energy_J" data-original-unit="J">--</div>
-                            <div class="result-unit" id="cumulative-energy-unit">J</div>
-                            <button class="unit-conversion-btn" id="cumulative-energy-conversion-btn" title="Convert Energy Units">🔄</button>
+                            <div class="energy-value-container">
+                                <div class="result-value" data-key="total_energy_J" data-original-unit="J">--</div>
+                                <span class="result-unit" id="cumulative-energy-unit">J</span>
+                                <button class="unit-conversion-btn" id="cumulative-energy-conversion-btn" type="button" title="Convert to eV">🔄</button>
+                            </div>
                         </div>
                         <div class="result-item highlight">
                             <div class="result-label">Energy (Watt-hours)</div>
