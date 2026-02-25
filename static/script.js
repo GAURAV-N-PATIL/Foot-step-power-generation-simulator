@@ -443,6 +443,7 @@ function displayGeneratorResults(data) {
         <div class="stat-box">
             <h4>Total Energy</h4>
             <div class="stat-value">${stats.total_energy_J} J</div>
+            <div class="unit-conversion-btn">${stats.convertEnergy} ev</div>
         </div>
     `;
 
